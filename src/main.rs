@@ -1,13 +1,24 @@
-fn help() {
-    println!("Usage: c51902asm [OPTIONS]... [INFILE]...
-Assembler for the 8-bit c51902 architecture.
+extern crate clap;
 
--h, --help      shows this menu.
--o, --outfile   specifies the name for the machine code file.
-                Default filename is \"a.out\".
--v, --version   shows the version number.");
-}
+use clap::{Arg, App};
 
 fn main() {
-    help();
+    let arg_parsing = App::new(clap::crate_name!())
+        .version(clap::crate_version!())
+        .author(clap::crate_authors!("\n"))
+        .about(clap::crate_description!())
+        .arg(Arg::with_name("FILE")
+             .required_unless("version"))
+        .arg(Arg::with_name("outfile")
+             .short("o")
+             .long("outfile")
+             .takes_value(true)
+             .help("Specifies the name for the machine code file.\n\
+                    Default filename is \"a.out\""))
+        .arg(Arg::with_name("version")
+             .short("v")
+             .long("version")
+             .takes_value(false)
+             .help("Shows the version number."))
+        .get_matches();
 }
