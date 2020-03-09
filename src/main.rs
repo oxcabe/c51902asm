@@ -2,6 +2,8 @@ extern crate clap;
 
 use clap::{Arg, App};
 
+fn parse_machine_code(infile: &str, outfile: Option<&str>) {}
+
 fn main() {
     let arg_parsing = App::new(clap::crate_name!())
         .version(clap::crate_version!())
@@ -21,4 +23,15 @@ fn main() {
              .takes_value(false)
              .help("Shows the version number."))
         .get_matches();
+
+    let infile_arg = arg_parsing.value_of("FILE");
+
+    if let Some(infile) = infile_arg {
+        let outfile_arg = arg_parsing.value_of("outfile");
+        parse_machine_code(infile, outfile_arg);
+    }
+    else if arg_parsing.is_present("version") {
+        println!("{} {}", clap::crate_name!(), 
+                 clap::crate_version!());
+    }
 }
