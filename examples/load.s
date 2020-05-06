@@ -1,4 +1,4 @@
-li r1 10
-li r2 20
+li R1 10
+li R2 20
 
-add r3 r2 r1
+add R3 R2 R1
