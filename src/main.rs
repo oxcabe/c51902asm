@@ -169,6 +169,11 @@ fn get_reg_id(word: &mut std::slice::Iter<'_, std::string::String>) -> u8 {
         .collect::<String>().parse::<u8>().unwrap()
 }
 
+fn get_port_id(word: &mut std::slice::Iter<'_, std::string::String>) -> u8 {
+    word.next().unwrap().split_terminator("P")
+        .collect::<String>().parse::<u8>().unwrap()
+}
+
 fn get_raw_num(word: &mut std::slice::Iter<'_, std::string::String>) -> u16 {
     word.next().unwrap().parse::<u16>().unwrap()
 }
