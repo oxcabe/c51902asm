@@ -152,9 +152,39 @@ fn gen_bin_instr(asm_vec: &Vec<String>) -> Vec<String> {
                     bin_instr.push_str(format!("{:04b}{:04b}{:04b}",
                         r1, r2, rd).as_str());
                 },
-                _ => {
-                    panic!("Unimplemented instruction: {:?}", mnemonic);
-                }
+                Opcode::Call => {
+                    let jump_addr = get_raw_num(&mut word);
+                    if jump_addr < 1024 {
+                        bin_instr.push_str(format!("{:010b}", jump_addr).as_str());
+                    }
+                },
+                Opcode::Ret => {
+                    bin_instr.push_str("0000000000");
+                },
+                Opcode::Lw => {
+                    let rd = get_reg_id(&mut word);
+                    let mem_addr = get_raw_num(&mut word);
+                    bin_instr.push_str(format!("{:06b}{:04b}", mem_addr, rd)
+                        .as_str());
+                },
+                Opcode::Sw => {
+                    let rs = get_reg_id(&mut word);
+                    let mem_addr = get_raw_num(&mut word);
+                    bin_instr.push_str(format!("{:04b}{:06b}", rs, mem_addr)
+                        .as_str());
+                },
+                Opcode::In => {
+                    let port = get_port_id(&mut word);
+                    let mem_addr = get_raw_num(&mut word);
+                    bin_instr.push_str(format!("{:04b}{:06b}", port, mem_addr)
+                        .as_str());
+                },
+                Opcode::Out => {
+                    let port = get_port_id(&mut word);
+                    let mem_addr = get_raw_num(&mut word);
+                    bin_instr.push_str(format!("{:04b}{:06b}", port, mem_addr)
+                        .as_str());
+                },
             }
             // println!("{}", bin_instr);
             bin_vec.push(bin_instr);
